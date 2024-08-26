@@ -252,14 +252,59 @@ doc = df[df.labels == 'entertainment']['data'].sample(random_state=123)
 summarize(doc.iloc[0])
 
 
-# In[53]:
+# In[54]:
 
 
 doc.iloc[0].split("\n")[0]
 
 
-# In[ ]:
+# # library for text rank text summarization
+# 
+
+# In[55]:
 
 
+get_ipython().system('pip install sumy')
 
+
+# In[56]:
+
+
+from sumy.summarizers.text_rank import TextRankSummarizer
+from sumy.summarizers.lsa import LsaSummarizer
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+
+
+# In[60]:
+
+
+summ = TextRankSummarizer()
+parser = PlaintextParser.from_string(
+   doc.iloc[0].split("\n"),
+   Tokenizer('english'))
+
+summary = summ(parser.document,sentences_count=5)
+
+
+# In[61]:
+
+
+summary
+
+
+# In[62]:
+
+
+for s in summary:
+    print(wrap(str(s)))
+
+
+# In[63]:
+
+
+summarizer = LsaSummarizer()
+summary = summarizer(parser.document,sentences_count=5)
+for s in summary:
+    print(wrap(str(s)))
 
